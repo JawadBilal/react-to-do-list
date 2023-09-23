@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './App.css';
+import {Task} from "./Task";
+
 import icon from "../src/images/icon.png";
 
 
@@ -14,8 +16,17 @@ function App() {
     const task = {
       id: todolist.length === 0 ? 1 : todolist[todolist.length - 1].id + 1,
       taskName: newTask,
+      completed: false,
     };
     setTodoList([...todolist, task]);
+  };
+  const doneTask = (id) => {
+    setTodoList(
+      todolist.map((task)=>{
+        if(task.id === id){ return{...task, completed:true};}
+        else{return task;} 
+      })
+    );
   };
 
   const deleteTask = (id) => {
@@ -34,12 +45,13 @@ function App() {
         </div>
         <div className='list'>
           {todolist.map((task)=>{
-            return (
-              <div className='taskList'>
-                <div>{task.taskName}</div>
-                <button onClick={() => deleteTask(task.id)}>X</button>
-              </div>
-            );
+            return <Task 
+            taskName={task.taskName}
+            id = {task.id}
+            completed={task.completed}
+            deleteTask={deleteTask}
+            doneTask={doneTask}
+            />
             
           })}
           
